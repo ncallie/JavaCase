@@ -1,12 +1,11 @@
 package ru.ncallie.JavaCase.models;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @NoArgsConstructor
-@Setter
-@Getter
+@AllArgsConstructor
+@Data
+@Builder
 public class User {
     private Integer id;
     private String first_name;

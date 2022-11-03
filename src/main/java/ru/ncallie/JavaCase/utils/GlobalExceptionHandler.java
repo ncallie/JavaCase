@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<String> handleException(HttpMessageNotReadableException exception, HttpServletRequest request) {
         Map<String, String> errors = new LinkedHashMap<>();
-        errors.put("Message", "You gave an incorrect value");
+        errors.put("Error", "You gave an incorrect value");
         errors.put("Details", exception.getMessage());
         return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
     }
@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handleException(UserNotFoundException exception, HttpServletRequest request) {
         Map<String, String> errors = new LinkedHashMap<>();
-        errors.put("Message", exception.getMessage());
+        errors.put("Error", exception.getMessage());
         return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
     }
 }

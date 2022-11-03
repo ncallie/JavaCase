@@ -1,6 +1,8 @@
 package ru.ncallie.JavaCase.repositories;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
@@ -8,10 +10,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 import ru.ncallie.JavaCase.dto.VkResponseDto;
 import ru.ncallie.JavaCase.models.User;
 
+import java.util.Objects;
+
 @Repository
+@RequiredArgsConstructor
 public class VKRepositoryImp implements VkRepository {
     private final String VER_API = "5.131";
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
 
     @Override
     public User getUserById(Integer user_id, String token) {
@@ -23,7 +28,7 @@ public class VKRepositoryImp implements VkRepository {
                 .queryParam("access_token", token)
                 .queryParam("v", VER_API)
                 .build().toString();
-        User user = restTemplate.getForObject(url, VkResponseDto.class).getResponse().get(0);
+        User user = Objects.requireNonNull(restTemplate.getForObject(url, VkResponseDto.class)).getResponse().get(0);
         return user;
     }
 
@@ -37,6 +42,9 @@ public class VKRepositoryImp implements VkRepository {
                 .queryParam("v", VER_API)
                 .build().toString();
         String response = restTemplate.getForObject(url, String.class);
-        return new ObjectMapper().readTree(response).get("response").toString().equals("1");
+        JsonNode jsonNode = new ObjectMapper().readTree(response);
+        if (jsonNode.findValue("response") != null)
+            return jsonNode.get("response").toString().equals("1");
+        return false;
     }
 }
