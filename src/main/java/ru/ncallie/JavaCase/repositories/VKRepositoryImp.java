@@ -4,18 +4,25 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.ncallie.JavaCase.dto.VkResponseDto;
+import ru.ncallie.JavaCase.exceptions.VkApiException;
 import ru.ncallie.JavaCase.models.User;
 
 import java.util.Objects;
 
+/*
+Возможно опитмальный вариант это Feign REST Client
+*/
+
 @Repository
 @RequiredArgsConstructor
 public class VKRepositoryImp implements VkRepository {
-    private final String VER_API = "5.131";
+    @Value("${vk_api_version}")
+    private String VER_API;
     private final RestTemplate restTemplate;
 
     @Override
@@ -45,6 +52,9 @@ public class VKRepositoryImp implements VkRepository {
         JsonNode jsonNode = new ObjectMapper().readTree(response);
         if (jsonNode.findValue("response") != null)
             return jsonNode.get("response").toString().equals("1");
+        else if (jsonNode.findValue("error") != null) {
+            throw new VkApiException(jsonNode.get("error").get("error_code").toString(), jsonNode.get("error").get("error_msg").toString());
+        }
         return false;
     }
 }

@@ -24,7 +24,6 @@ import ru.ncallie.JavaCase.utils.Convert;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -77,14 +76,12 @@ public class UsersControllerTest {
 
     @Test
     public void emptyTokenAndBody() throws Exception {
-        this.mockMvc.perform(post("/api/users"))
-                .andExpect(status().isBadRequest());
+        this.mockMvc.perform(post("/api/users")).andExpect(status().isBadRequest());
     }
 
     @Test
     public void emptyBody() throws Exception {
-        this.mockMvc.perform(post("/api/users/")
-                .header("vk_service_token", "token"))
+        this.mockMvc.perform(post("/api/users/").header("vk_service_token", "token"))
                 .andExpect(status().isBadRequest());
     }
 
@@ -92,7 +89,7 @@ public class UsersControllerTest {
     public void getOk() throws Exception {
         String jsonString = "{\"user_id\": \"4\", \"group_id\": \"2\"}";
         this.mockMvc.perform(post("/api/users/")
-                        .content(jsonString).contentType(MediaType.APPLICATION_JSON)
+                .content(jsonString).contentType(MediaType.APPLICATION_JSON)
                 .header("vk_service_token", "token"))
                 .andExpect(status().isOk());
     }

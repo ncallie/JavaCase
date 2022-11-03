@@ -1,6 +1,5 @@
 package ru.ncallie.JavaCase.repositories;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +13,6 @@ import ru.ncallie.JavaCase.dto.VkResponseDto;
 import ru.ncallie.JavaCase.models.User;
 
 import java.util.Collections;
-import java.util.List;
 
 import static org.mockito.Mockito.when;
 

@@ -6,6 +6,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.ncallie.JavaCase.exceptions.UserNotFoundException;
+import ru.ncallie.JavaCase.exceptions.VkApiException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashMap;
@@ -17,15 +18,29 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<String> handleException(HttpMessageNotReadableException exception, HttpServletRequest request) {
         Map<String, String> errors = new LinkedHashMap<>();
-        errors.put("Error", "You gave an incorrect value");
-        errors.put("Details", exception.getMessage());
+        errors.put("error_code", "100");
+        if (exception.getMessage().contains("Overflow: numeric value"))
+            errors.put("error_msg", "Numeric value out of range (-2147483648 -2147483647)");
+        else if (exception.getMessage().contains("Cannot deserialize value of type `java.lang.Integer` from String"))
+            errors.put("error_msg", "Cannot deserialize value of type Integer from String");
+        else
+            errors.put("undefined expressions", exception.getMessage());
         return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handleException(UserNotFoundException exception, HttpServletRequest request) {
         Map<String, String> errors = new LinkedHashMap<>();
-        errors.put("Error", exception.getMessage());
+        errors.put("error_code", "18");
+        errors.put("error_msg", exception.getMessage());
+        return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(VkApiException.class)
+    public ResponseEntity<String> handleException(VkApiException exception, HttpServletRequest request) {
+        Map<String, String> errors = new LinkedHashMap<>();
+        errors.put("error code", exception.getCode());
+        errors.put("error_msg", exception.getMsg());
         return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
     }
 }

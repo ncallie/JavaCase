@@ -22,7 +22,8 @@ public class UsersController {
 
     @PostMapping("/users")
     public ResponseEntity getUser(@RequestHeader("vk_service_token") String token,
-                                  @Valid @RequestBody UserAndGroupIdRequestDto requestBody, BindingResult bindingResult) {
+                                  @Valid @RequestBody UserAndGroupIdRequestDto requestBody,
+                                  BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(convert.toMessages(bindingResult));
         User user = vkService.getUser(requestBody, token);
