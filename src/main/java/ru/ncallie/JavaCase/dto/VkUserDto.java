@@ -13,7 +13,7 @@ import lombok.*;
 @Builder
 @JsonPropertyOrder({"last_name", "first_name", "nickname", "member"})
 @Schema(name = "User")
-public class UserDto {
+public class VkUserDto {
     @Schema(example = "Иван")
     private String first_name;
     @Schema(example = "Иванов")

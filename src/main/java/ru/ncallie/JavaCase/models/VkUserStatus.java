@@ -1,5 +1,5 @@
 package ru.ncallie.JavaCase.models;
 
-public enum UserStatus {
+public enum VkUserStatus {
     banned, deleted;
 }

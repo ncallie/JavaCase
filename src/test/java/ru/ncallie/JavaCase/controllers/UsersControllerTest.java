@@ -15,9 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.validation.BindingResult;
-import ru.ncallie.JavaCase.dto.UserAndGroupIdRequestDto;
-import ru.ncallie.JavaCase.dto.UserDto;
-import ru.ncallie.JavaCase.models.User;
+import ru.ncallie.JavaCase.dto.VkUserAndGroupIdRequestDto;
+import ru.ncallie.JavaCase.dto.VkUserDto;
+import ru.ncallie.JavaCase.models.VkUser;
 import ru.ncallie.JavaCase.services.VkService;
 import ru.ncallie.JavaCase.utils.Convert;
 
@@ -45,7 +45,7 @@ public class UsersControllerTest {
     public void getUserTestHttpStatusOK() {
         BindingResult bindingResult = mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(false);
-        ResponseEntity response = usersController.getUser("token", new UserAndGroupIdRequestDto(1111, 1111), bindingResult);
+        ResponseEntity response = usersController.getUser("token", new VkUserAndGroupIdRequestDto(1111, 1111), bindingResult);
         Assert.assertTrue(CoreMatchers.is(response.getStatusCode()).matches(HttpStatus.OK));
     }
 
@@ -53,7 +53,7 @@ public class UsersControllerTest {
     public void getUserTestHttpStatusBAD_REQUEST() {
         BindingResult bindingResult = mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(true);
-        ResponseEntity response = usersController.getUser("token", new UserAndGroupIdRequestDto(1111, 1111), bindingResult);
+        ResponseEntity response = usersController.getUser("token", new VkUserAndGroupIdRequestDto(1111, 1111), bindingResult);
         Assert.assertTrue(CoreMatchers.is(response.getStatusCode()).matches(HttpStatus.BAD_REQUEST));
     }
 
@@ -62,15 +62,15 @@ public class UsersControllerTest {
         BindingResult bindingResult = mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(false);
 
-        UserAndGroupIdRequestDto userAndGroupIdRequestDto = new UserAndGroupIdRequestDto(78385, 93559769);
+        VkUserAndGroupIdRequestDto vkUserAndGroupIdRequestDto = new VkUserAndGroupIdRequestDto(78385, 93559769);
         String token = "token";
-        User user = User.builder().first_name("Иванов").last_name("Иван").nickname("Иванович").isMember(true).id(78385).build();
-        UserDto userDto = UserDto.builder().first_name("Иванов").last_name("Иван").nickname("Иванович").isMember(true).build();
+        VkUser vkUser = VkUser.builder().first_name("Иванов").last_name("Иван").nickname("Иванович").isMember(true).id(78385).build();
+        VkUserDto vkUserDto = VkUserDto.builder().first_name("Иванов").last_name("Иван").nickname("Иванович").isMember(true).build();
 
-        when(vkService.getUser(userAndGroupIdRequestDto, token)).thenReturn(user);
-        when(convert.toUserDto(user)).thenReturn(userDto);
-        ResponseEntity response = usersController.getUser(token, userAndGroupIdRequestDto, bindingResult);
-        Assert.assertEquals(response.getBody(), userDto);
+        when(vkService.getUser(vkUserAndGroupIdRequestDto, token)).thenReturn(vkUser);
+        when(convert.toUserDto(vkUser)).thenReturn(vkUserDto);
+        ResponseEntity response = usersController.getUser(token, vkUserAndGroupIdRequestDto, bindingResult);
+        Assert.assertEquals(response.getBody(), vkUserDto);
         Assert.assertTrue(CoreMatchers.is(response.getStatusCode()).matches(HttpStatus.OK));
     }
 

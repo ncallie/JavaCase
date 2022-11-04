@@ -6,11 +6,11 @@ import lombok.*;
 @AllArgsConstructor
 @Data
 @Builder
-public class User {
+public class VkUser {
     private Integer id;
     private String first_name;
     private String last_name;
-    private UserStatus deactivated;
+    private VkUserStatus deactivated;
     private String nickname;
     private boolean isMember;
 }

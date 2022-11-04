@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.ncallie.JavaCase.dto.VkResponseDto;
 import ru.ncallie.JavaCase.exceptions.VkApiException;
-import ru.ncallie.JavaCase.models.User;
+import ru.ncallie.JavaCase.models.VkUser;
 
 /*
 Возможно опитмальный вариант это Feign REST Client
@@ -26,7 +26,7 @@ public class VKRepositoryImp implements VkRepository {
 
     @Cacheable(value = "getUserById", key = "#user_id")
     @Override
-    public User getUserById(Integer user_id, String token) {
+    public VkUser getUserById(Integer user_id, String token) {
         String USERS_GET = "https://api.vk.com/method/users.get";
         String url = UriComponentsBuilder.fromHttpUrl(USERS_GET)
                 .queryParam("user_ids", user_id)
@@ -34,8 +34,8 @@ public class VKRepositoryImp implements VkRepository {
                 .queryParam("access_token", token)
                 .queryParam("v", VER_API)
                 .build().toString();
-        User user = restTemplate.getForObject(url, VkResponseDto.class).getResponse().get(0);
-        return user;
+        VkUser vkUser = restTemplate.getForObject(url, VkResponseDto.class).getResponse().get(0);
+        return vkUser;
     }
 
     @SneakyThrows

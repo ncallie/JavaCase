@@ -1,8 +1,8 @@
 package ru.ncallie.JavaCase.services;
 
-import ru.ncallie.JavaCase.dto.UserAndGroupIdRequestDto;
-import ru.ncallie.JavaCase.models.User;
+import ru.ncallie.JavaCase.dto.VkUserAndGroupIdRequestDto;
+import ru.ncallie.JavaCase.models.VkUser;
 
 public interface VkService {
-    User getUser(UserAndGroupIdRequestDto requestBody, String token);
+    VkUser getUser(VkUserAndGroupIdRequestDto requestBody, String token);
 }

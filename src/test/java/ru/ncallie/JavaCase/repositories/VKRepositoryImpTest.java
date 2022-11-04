@@ -8,9 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 import ru.ncallie.JavaCase.dto.VkResponseDto;
-import ru.ncallie.JavaCase.models.User;
+import ru.ncallie.JavaCase.models.VkUser;
 
 import java.util.Collections;
 
@@ -33,11 +32,11 @@ public class VKRepositoryImpTest {
     public void getUserByIdTest() {
         String url = String.format(getUsers, 78385, "token");
         VkResponseDto vkResponseDto = new VkResponseDto();
-        User user = User.builder().first_name("Иванов").last_name("Иван").nickname("Иванович").isMember(true).id(78385).build();
-        vkResponseDto.setResponse(Collections.singletonList(user));
+        VkUser vkUser = VkUser.builder().first_name("Иванов").last_name("Иван").nickname("Иванович").isMember(true).id(78385).build();
+        vkResponseDto.setResponse(Collections.singletonList(vkUser));
         when(restTemplate.getForObject(url , VkResponseDto.class)).thenReturn(vkResponseDto);
-        User userRepo = vkRepository.getUserById(78385, "token");
-        Assert.assertEquals(userRepo, user);
+        VkUser vkUserRepo = vkRepository.getUserById(78385, "token");
+        Assert.assertEquals(vkUserRepo, vkUser);
     }
 
     @Test

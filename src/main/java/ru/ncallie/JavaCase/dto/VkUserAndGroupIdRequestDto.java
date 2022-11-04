@@ -11,7 +11,7 @@ import javax.validation.constraints.Positive;
 @Getter
 @AllArgsConstructor
 @Schema(name = "getUser")
-public class UserAndGroupIdRequestDto {
+public class VkUserAndGroupIdRequestDto {
     @Positive
     @NotNull
     @Schema(description = "User identifier", example = "205080632", minimum = "1", maximum = "2147483647", required = true)

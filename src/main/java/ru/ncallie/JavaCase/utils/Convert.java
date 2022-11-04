@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
-import ru.ncallie.JavaCase.dto.UserDto;
-import ru.ncallie.JavaCase.models.User;
+import ru.ncallie.JavaCase.dto.VkUserDto;
+import ru.ncallie.JavaCase.models.VkUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class Convert {
         return errors;
     }
 
-    public UserDto toUserDto(User user) {
-        return modelMapper.map(user, UserDto.class);
+    public VkUserDto toUserDto(VkUser vkUser) {
+        return modelMapper.map(vkUser, VkUserDto.class);
     }
 }

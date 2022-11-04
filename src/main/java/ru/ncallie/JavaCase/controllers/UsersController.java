@@ -11,9 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.ncallie.JavaCase.dto.UserAndGroupIdRequestDto;
-import ru.ncallie.JavaCase.dto.UserDto;
-import ru.ncallie.JavaCase.models.User;
+import ru.ncallie.JavaCase.dto.VkUserAndGroupIdRequestDto;
+import ru.ncallie.JavaCase.dto.VkUserDto;
+import ru.ncallie.JavaCase.models.VkUser;
 import ru.ncallie.JavaCase.services.VkService;
 import ru.ncallie.JavaCase.utils.Convert;
 
@@ -30,7 +30,7 @@ public class UsersController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Get user",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserDto.class))}),
+                            schema = @Schema(implementation = VkUserDto.class))}),
             @ApiResponse(responseCode = "400", description = "Exception",
                     content = {@Content(mediaType = "application/json",
                             examples = {
@@ -42,13 +42,13 @@ public class UsersController {
     })
     @PostMapping("/user")
     public ResponseEntity getUser(@RequestHeader("vk_service_token") String token,
-                                  @Valid @RequestBody UserAndGroupIdRequestDto requestBody,
+                                  @Valid @RequestBody VkUserAndGroupIdRequestDto requestBody,
                                   BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(convert.toMessages(bindingResult));
-        User user = vkService.getUser(requestBody, token);
-        UserDto userDto = convert.toUserDto(user);
-        return ResponseEntity.ok().body(userDto);
+        VkUser vkUser = vkService.getUser(requestBody, token);
+        VkUserDto vkUserDto = convert.toUserDto(vkUser);
+        return ResponseEntity.ok().body(vkUserDto);
     }
 
 
