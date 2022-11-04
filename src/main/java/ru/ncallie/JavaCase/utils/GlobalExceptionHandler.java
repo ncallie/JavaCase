@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(VkApiException.class)
     public ResponseEntity<String> handleException(VkApiException exception, HttpServletRequest request) {
         Map<String, String> errors = new LinkedHashMap<>();
-        errors.put("error code", exception.getCode());
+        errors.put("error code", exception.getCode().toString());
         errors.put("error_msg", exception.getMsg());
         return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
     }

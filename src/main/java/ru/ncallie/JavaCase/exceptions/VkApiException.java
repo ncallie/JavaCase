@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public class VkApiException extends RuntimeException {
-    private String code;
+    private Integer code;
     private String msg;
 
-    public VkApiException(String code, String msg) {
+    public VkApiException(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
     }
