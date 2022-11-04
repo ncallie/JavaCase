@@ -39,7 +39,7 @@ public class VKRepositoryImp implements VkRepository {
     }
 
     @SneakyThrows
-    @Cacheable(value = "isMember", key = "#user_id + #group_id")
+    @Cacheable(value = "isMember", key = "#user_id.toString() + #group_id.toString()") //не лучший вариант
     @Override
     public boolean isMember(Integer user_id, Integer group_id, String token) {
 

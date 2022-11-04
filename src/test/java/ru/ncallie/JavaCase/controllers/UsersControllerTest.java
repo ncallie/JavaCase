@@ -76,19 +76,19 @@ public class UsersControllerTest {
 
     @Test
     public void emptyTokenAndBody() throws Exception {
-        this.mockMvc.perform(post("/api/users")).andExpect(status().isBadRequest());
+        this.mockMvc.perform(post("/api/user")).andExpect(status().isBadRequest());
     }
 
     @Test
     public void emptyBody() throws Exception {
-        this.mockMvc.perform(post("/api/users/").header("vk_service_token", "token"))
+        this.mockMvc.perform(post("/api/user/").header("vk_service_token", "token"))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     public void getOk() throws Exception {
         String jsonString = "{\"user_id\": \"4\", \"group_id\": \"2\"}";
-        this.mockMvc.perform(post("/api/users/")
+        this.mockMvc.perform(post("/api/user/")
                 .content(jsonString).contentType(MediaType.APPLICATION_JSON)
                 .header("vk_service_token", "token"))
                 .andExpect(status().isOk());

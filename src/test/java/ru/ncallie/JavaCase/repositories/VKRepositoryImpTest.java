@@ -26,14 +26,12 @@ public class VKRepositoryImpTest {
     @MockBean
     private RestTemplate restTemplate;
 
+
+    private String isMember = "https://api.vk.com/method/groups.isMember?group_id=%d&user_id=%d&access_token=%s&v=5.131";
+    private String getUsers = "https://api.vk.com/method/users.get?user_ids=%d&fields=nickname&access_token=%s&v=5.131";
     @Test
     public void getUserByIdTest() {
-        String url = UriComponentsBuilder.fromHttpUrl("https://api.vk.com/method/users.get")
-                .queryParam("user_ids", 78385)
-                .queryParam("fields", "nickname")
-                .queryParam("access_token", "token")
-                .queryParam("v", "5.131")
-                .build().toString();
+        String url = String.format(getUsers, 78385, "token");
         VkResponseDto vkResponseDto = new VkResponseDto();
         User user = User.builder().first_name("Иванов").last_name("Иван").nickname("Иванович").isMember(true).id(78385).build();
         vkResponseDto.setResponse(Collections.singletonList(user));
@@ -43,23 +41,29 @@ public class VKRepositoryImpTest {
     }
 
     @Test
-    public void isMemberTest() {
-        String url = UriComponentsBuilder.fromHttpUrl("https://api.vk.com/method/groups.isMember")
-                .queryParam("group_id", 18936664)
-                .queryParam("user_id", 61234563)
-                .queryParam("access_token", "token")
-                .queryParam("v", "5.131")
-                .build().toString();
+    public void isMemberTrue() {
+        String url = String.format(isMember, 18936663, 61234563, "token");
         when(restTemplate.getForObject(url , String.class)).thenReturn("{\"response\":1}");
-        Assert.assertTrue(vkRepository.isMember(61234563, 18936664, "token"));
+        Assert.assertTrue(vkRepository.isMember(61234563, 18936663, "token"));
+    }
 
+    @Test
+    public void isMemberFalse() {
+        String url = String.format(isMember, 18936621, 61234553, "token");
         when(restTemplate.getForObject(url , String.class)).thenReturn("{\"response\":0}");
-        Assert.assertFalse(vkRepository.isMember(61234563, 18936664, "token"));
+        Assert.assertFalse(vkRepository.isMember(61234553, 18936621, "token"));
+    }
 
+    @Test
+    public void isMemberEmpty() {
+        String url = String.format(isMember, 21936621, 32234553, "token");
         when(restTemplate.getForObject(url , String.class)).thenReturn("");
-        Assert.assertFalse(vkRepository.isMember(61234563, 18936664, "token"));
-
+        Assert.assertFalse(vkRepository.isMember(32234553, 21936621, "token"));
+    }
+    @Test
+    public void isMemberUndef() {
+        String url = String.format(isMember, 219566621, 36534553, "token");
         when(restTemplate.getForObject(url , String.class)).thenReturn("{\"response\":5}");
-        Assert.assertFalse(vkRepository.isMember(61234563, 18936664, "token"));
+        Assert.assertFalse(vkRepository.isMember(36534553, 219566621, "token"));
     }
 }
