@@ -22,7 +22,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class UsersController {
+public class VkUsersController {
     private final VkService vkService;
     private final Convert convert;
 
@@ -40,7 +40,7 @@ public class UsersController {
                                             value = "{\"group_id\":[\"не должно равняться null\"],\"user_id\":[\"не должно равняться null\"]}"
                                     )})})
     })
-    @PostMapping("/user")
+    @PostMapping("/vk/user")
     public ResponseEntity getUser(@RequestHeader("vk_service_token") String token,
                                   @Valid @RequestBody VkUserAndGroupIdRequestDto requestBody,
                                   BindingResult bindingResult) {
