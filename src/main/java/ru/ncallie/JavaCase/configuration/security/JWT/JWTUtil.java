@@ -5,17 +5,21 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.ZonedDateTime;
 import java.util.Date;
 
+import static lombok.AccessLevel.PRIVATE;
+
 @Component
-public class JWTUtil {
+@FieldDefaults(level = PRIVATE)
+public final class JWTUtil {
 
     @Value("${jwt_secret}")
-    private String secret;
+    String secret;
 
     public String generateToken(String username) {
         Date expirationDate = Date.from(ZonedDateTime.now().plusDays(1).toInstant());

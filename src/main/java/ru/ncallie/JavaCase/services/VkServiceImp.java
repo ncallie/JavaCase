@@ -1,16 +1,20 @@
 package ru.ncallie.JavaCase.services;
 
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import ru.ncallie.JavaCase.dto.VkUserAndGroupIdRequestDto;
 import ru.ncallie.JavaCase.exceptions.UserNotFoundException;
 import ru.ncallie.JavaCase.models.VkUser;
 import ru.ncallie.JavaCase.repositories.VkRepository;
 
+import static lombok.AccessLevel.PRIVATE;
+
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = PRIVATE, makeFinal = true)
 public class VkServiceImp implements VkService {
-    private final VkRepository vkRepository;
+    VkRepository vkRepository;
 
     @Override
     public VkUser getUser(VkUserAndGroupIdRequestDto requestBody, String token) {

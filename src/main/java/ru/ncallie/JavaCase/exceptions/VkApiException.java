@@ -1,11 +1,15 @@
 package ru.ncallie.JavaCase.exceptions;
 
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
+
+import static lombok.AccessLevel.PRIVATE;
 
 @Getter
-public class VkApiException extends RuntimeException {
-    private Integer code;
-    private String msg;
+@FieldDefaults(level = PRIVATE, makeFinal = true)
+public final class VkApiException extends RuntimeException {
+    Integer code;
+    String msg;
 
     public VkApiException(Integer code, String msg) {
         this.code = code;

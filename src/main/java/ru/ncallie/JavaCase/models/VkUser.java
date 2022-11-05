@@ -1,17 +1,24 @@
 package ru.ncallie.JavaCase.models;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
+
+import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
-public class VkUser {
-    private Integer id;
-    private String first_name;
-    private String last_name;
-    private VkUserStatus deactivated;
-    private String nickname;
-    private boolean isMember;
+@FieldDefaults(level = PRIVATE)
+public final class VkUser {
+    Integer id;
+    String first_name;
+    String last_name;
+    VkUserStatus deactivated;
+    String nickname;
+    boolean isMember;
 }
 

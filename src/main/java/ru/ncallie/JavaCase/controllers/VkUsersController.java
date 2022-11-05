@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -19,12 +20,15 @@ import ru.ncallie.JavaCase.utils.Convert;
 
 import javax.validation.Valid;
 
+import static lombok.AccessLevel.PRIVATE;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class VkUsersController {
-    private final VkService vkService;
-    private final Convert convert;
+@FieldDefaults(level = PRIVATE, makeFinal = true)
+public final class VkUsersController {
+    VkService vkService;
+    Convert convert;
 
     @Operation(summary = "Get user", description = "Get user information and member status information", tags = "Post")
     @ApiResponses(value = {

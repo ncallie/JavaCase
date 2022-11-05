@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,11 +13,9 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
-import static javax.persistence.EnumType.STRING;
-import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.AUTO;
+import static lombok.AccessLevel.PRIVATE;
 
 
 @AllArgsConstructor
@@ -25,14 +24,15 @@ import static javax.persistence.GenerationType.AUTO;
 @Setter
 @Getter
 @Table(name = "usr")
-public class User implements UserDetails {
+@FieldDefaults(level = PRIVATE)
+public final class User implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy = AUTO)
-    private Long id;
-    @Column(unique = true)
-    private String username;
-    private String password;
+    @Id @GeneratedValue(strategy = AUTO)
+    Long id;
+    @Column(unique = true, columnDefinition = "TEXT")
+    String username;
+    @Column(columnDefinition = "TEXT")
+    String password;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

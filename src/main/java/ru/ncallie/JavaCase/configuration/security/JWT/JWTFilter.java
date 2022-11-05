@@ -2,6 +2,7 @@ package ru.ncallie.JavaCase.configuration.security.JWT;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,17 +15,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.file.AccessDeniedException;
 
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @RequiredArgsConstructor
 @Component
-public class JWTFilter extends OncePerRequestFilter {
-
-    private final JWTUtil jwtUtil;
-    private final UserService userService;
+@FieldDefaults(level = PRIVATE, makeFinal = true)
+public final class JWTFilter extends OncePerRequestFilter {
+    JWTUtil jwtUtil;
+    UserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -35,20 +35,24 @@ public class JWTFilter extends OncePerRequestFilter {
             String jwt = authorizationHeader.substring(7);
             if (jwt.isBlank())
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token");
-            else {
-                try {
-                    String username = jwtUtil.validateTokenAndRetrieveClaim(jwt);
-                    UserDetails userDetails = userService.loadUserByUsername(username);
-                    UsernamePasswordAuthenticationToken authToken =
-                            new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
-                    if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                        SecurityContextHolder.getContext().setAuthentication(authToken);
-                    }
-                } catch (JWTVerificationException e) {
-                    //TODO:AccessDeniedException
-                }
-            }
+            else
+                doFilterInternalHelper(jwt);
         }
         filterChain.doFilter(request, response);
     }
+
+    private void doFilterInternalHelper(String jwt) {
+        try {
+            String username = jwtUtil.validateTokenAndRetrieveClaim(jwt);
+            UserDetails userDetails = userService.loadUserByUsername(username);
+            UsernamePasswordAuthenticationToken authToken =
+                    new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+            if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
+        } catch (JWTVerificationException e) {
+            //TODO:AccessDeniedException
+        }
+    }
+
 }

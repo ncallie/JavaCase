@@ -1,6 +1,7 @@
 package ru.ncallie.JavaCase.controllers;
 
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -15,16 +16,18 @@ import ru.ncallie.JavaCase.services.UserService;
 import ru.ncallie.JavaCase.utils.Convert;
 
 import javax.validation.Valid;
-import java.util.Collections;
+import java.util.Map;
+
+import static lombok.AccessLevel.PRIVATE;
 
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class SecurityController {
-
-    private final JWTUtil jwtUtil;
-    private final Convert convert;
-    private final UserService userService;
+@FieldDefaults(level = PRIVATE, makeFinal = true)
+public final class SecurityController {
+    JWTUtil jwtUtil;
+    Convert convert;
+    UserService userService;
     @PostMapping("/reg")
     public ResponseEntity registration(@RequestBody @Valid UserDto userDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
@@ -32,6 +35,6 @@ public class SecurityController {
         User user = convert.toUser(userDto);
         userService.save(user);
         String token = jwtUtil.generateToken(user.getUsername());
-        return ResponseEntity.ok().body(Collections.singletonMap("jwt-token", token));
+        return ResponseEntity.ok().body(Map.of("jwt-token", token));
     }
 }

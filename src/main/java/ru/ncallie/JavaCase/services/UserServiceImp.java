@@ -1,6 +1,8 @@
 package ru.ncallie.JavaCase.services;
 
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,15 +11,17 @@ import ru.ncallie.JavaCase.exceptions.DataInUseException;
 import ru.ncallie.JavaCase.models.User;
 import ru.ncallie.JavaCase.repositories.UserRepository;
 
-import java.util.HashSet;
+import static lombok.AccessLevel.PRIVATE;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = PRIVATE, makeFinal = true)
 public class UserServiceImp implements UserService {
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    UserRepository userRepository;
+    PasswordEncoder passwordEncoder;
 
     @Override
+    @Cacheable(key = "#username", cacheNames = {"cacheUsers"})
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found"));
     }

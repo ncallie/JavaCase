@@ -1,6 +1,7 @@
 package ru.ncallie.JavaCase.utils;
 
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
@@ -16,10 +17,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static lombok.AccessLevel.PRIVATE;
+
 @Component
 @RequiredArgsConstructor
+@FieldDefaults(level = PRIVATE, makeFinal = true)
 public class Convert {
-    private final ModelMapper modelMapper;
+    ModelMapper modelMapper;
 
     public Map<String, List<String>> toMessages(BindingResult bindingResult) {
         Map<String, List<String>> errors = new HashMap<>();

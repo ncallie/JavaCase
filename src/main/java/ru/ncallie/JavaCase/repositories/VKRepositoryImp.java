@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
@@ -13,20 +15,25 @@ import ru.ncallie.JavaCase.dto.VkResponseDto;
 import ru.ncallie.JavaCase.exceptions.VkApiException;
 import ru.ncallie.JavaCase.models.VkUser;
 
+import static lombok.AccessLevel.PRIVATE;
+
 /*
 Возможно опитмальный вариант это Feign REST Client
 */
 
 @Repository
 @RequiredArgsConstructor
+@Log4j2
+@FieldDefaults(level = PRIVATE, makeFinal = true)
 public class VKRepositoryImp implements VkRepository {
     @Value("${vk_api_version}")
-    private String VER_API;
-    private final RestTemplate restTemplate;
+    String VER_API = "5.131";
+    RestTemplate restTemplate;
 
-    @Cacheable(value = "getUserById", key = "#user_id")
+    @Cacheable(key = "#user_id", cacheNames = {"cacheVK"})
     @Override
     public VkUser getUserById(Integer user_id, String token) {
+        log.info("Get user");
         String USERS_GET = "https://api.vk.com/method/users.get";
         String url = UriComponentsBuilder.fromHttpUrl(USERS_GET)
                 .queryParam("user_ids", user_id)
@@ -39,7 +46,7 @@ public class VKRepositoryImp implements VkRepository {
     }
 
     @SneakyThrows
-    @Cacheable(value = "isMember", key = "#user_id.toString() + #group_id.toString()") //не лучший вариант
+    @Cacheable(key = "#user_id.toString() + #group_id.toString()", cacheNames = {"cacheVK"})
     @Override
     public boolean isMember(Integer user_id, Integer group_id, String token) {
 

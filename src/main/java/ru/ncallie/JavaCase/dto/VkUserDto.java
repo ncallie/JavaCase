@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import static lombok.AccessLevel.PRIVATE;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,15 +16,15 @@ import lombok.*;
 @Builder
 @JsonPropertyOrder({"last_name", "first_name", "nickname", "member"})
 @Schema(name = "User")
-public class VkUserDto {
+@FieldDefaults(level = PRIVATE)
+public final class VkUserDto {
     @Schema(example = "Иван")
-    private String first_name;
+    String first_name;
     @Schema(example = "Иванов")
-    private String last_name;
+    String last_name;
     @Schema(example = "Иванович")
-    private String nickname;
-
-    private boolean isMember;
+    String nickname;
+    boolean isMember;
 
     @JsonProperty("middle_name")
     public String getNickname() {
