@@ -66,7 +66,7 @@ public class VkUsersControllerTest {
         VkUserDto vkUserDto = VkUserDto.builder().first_name("Иванов").last_name("Иван").nickname("Иванович").isMember(true).build();
 
         when(vkService.getUser(vkUserAndGroupIdRequestDto, token)).thenReturn(vkUser);
-        when(convert.toUserDto(vkUser)).thenReturn(vkUserDto);
+        when(convert.toVKUserDto(vkUser)).thenReturn(vkUserDto);
         ResponseEntity response = vkUsersController.getUser(token, vkUserAndGroupIdRequestDto, bindingResult);
         Assert.assertEquals(response.getBody(), vkUserDto);
         Assert.assertTrue(CoreMatchers.is(response.getStatusCode()).matches(HttpStatus.OK));

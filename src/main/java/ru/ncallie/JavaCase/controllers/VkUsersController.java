@@ -47,7 +47,7 @@ public class VkUsersController {
         if (bindingResult.hasErrors())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(convert.toMessages(bindingResult));
         VkUser vkUser = vkService.getUser(requestBody, token);
-        VkUserDto vkUserDto = convert.toUserDto(vkUser);
+        VkUserDto vkUserDto = convert.toVKUserDto(vkUser);
         return ResponseEntity.ok().body(vkUserDto);
     }
 

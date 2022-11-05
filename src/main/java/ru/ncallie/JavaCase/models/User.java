@@ -1,6 +1,9 @@
 package ru.ncallie.JavaCase.models;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,14 +12,18 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
+import static javax.persistence.EnumType.STRING;
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.AUTO;
 
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
+
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
+@Setter
+@Getter
 @Table(name = "usr")
 public class User implements UserDetails {
 
@@ -27,20 +34,19 @@ public class User implements UserDetails {
     private String username;
     private String password;
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new HashSet<GrantedAuthority>(); //заглушка на авторизацию
+        return new HashSet<>();
     }
 
     @Override
     public String getPassword() {
-        return username;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return password;
+        return username;
     }
 
     @Override

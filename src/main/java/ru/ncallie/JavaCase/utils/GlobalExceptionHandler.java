@@ -6,10 +6,12 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import ru.ncallie.JavaCase.exceptions.DataInUseException;
 import ru.ncallie.JavaCase.exceptions.UserNotFoundException;
 import ru.ncallie.JavaCase.exceptions.VkApiException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.nio.file.AccessDeniedException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -51,5 +53,21 @@ public class GlobalExceptionHandler {
         errors.put("error code", "401");
         errors.put("error_msg", "You aren’t authenticated–either not authenticated at all or authenticated incorrectly–but please reauthenticate and try again");
         return new ResponseEntity(errors, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<String> handleException(AccessDeniedException exception, HttpServletRequest request) {
+        Map<String, String> errors = new LinkedHashMap<>();
+        errors.put("error code", "403");
+        errors.put("error_msg", "Access is denied");
+        return new ResponseEntity(errors, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(DataInUseException.class)
+    public ResponseEntity<String> handleException(DataInUseException exception, HttpServletRequest request) {
+        Map<String, String> errors = new LinkedHashMap<>();
+        errors.put("error code", "409");
+        errors.put("error_msg", exception.getMessage());
+        return new ResponseEntity(errors, HttpStatus.CONFLICT);
     }
 }
