@@ -1,11 +1,12 @@
 package ru.ncallie.JavaCase.configuration.security.JWT;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.ncallie.JavaCase.services.UserService;
@@ -22,7 +23,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @RequiredArgsConstructor
 @Component
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-public final class JWTFilter extends OncePerRequestFilter {
+public class JWTFilter extends OncePerRequestFilter {
     JWTUtil jwtUtil;
     UserService userService;
 
@@ -36,23 +37,24 @@ public final class JWTFilter extends OncePerRequestFilter {
             if (jwt.isBlank())
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token");
             else
-                doFilterInternalHelper(jwt);
+                doFilterInternalHelper(jwt, response);
         }
         filterChain.doFilter(request, response);
     }
 
-    private void doFilterInternalHelper(String jwt) {
+    @SneakyThrows
+    private void doFilterInternalHelper(String jwt, HttpServletResponse response) {
+        String username = jwtUtil.validateTokenAndRetrieveClaim(jwt);
+        UserDetails userDetails;
         try {
-            String username = jwtUtil.validateTokenAndRetrieveClaim(jwt);
-            UserDetails userDetails = userService.loadUserByUsername(username);
-            UsernamePasswordAuthenticationToken authToken =
-                    new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
-            if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-            }
-        } catch (JWTVerificationException e) {
-            //TODO:AccessDeniedException
+            userDetails = userService.loadUserByUsername(username);
+        } catch (UsernameNotFoundException ex) {
+            return;
+        }
+        UsernamePasswordAuthenticationToken authToken =
+                new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            SecurityContextHolder.getContext().setAuthentication(authToken);
         }
     }
-
 }

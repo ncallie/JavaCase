@@ -19,6 +19,7 @@ import ru.ncallie.JavaCase.services.VkService;
 import ru.ncallie.JavaCase.utils.Convert;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -26,7 +27,7 @@ import static lombok.AccessLevel.PRIVATE;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-public final class VkUsersController {
+public class VkUsersController {
     VkService vkService;
     Convert convert;
 
@@ -35,12 +36,12 @@ public final class VkUsersController {
             @ApiResponse(responseCode = "200", description = "Get user",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = VkUserDto.class))}),
-            @ApiResponse(responseCode = "400", description = "Exception",
+            @ApiResponse(responseCode = "400", description = "Error",
                     content = {@Content(mediaType = "application/json",
                             examples = {
-                                    @ExampleObject( name = "VkApiException",
+                                    @ExampleObject(name = "VkApiError",
                                             value = "{\"error_code\":\"100\",\"error_msg\":\"Cannot deserialize value of type Integer from String\"}"),
-                                    @ExampleObject( name = "Exception",
+                                    @ExampleObject(name = "Error",
                                             value = "{\"group_id\":[\"не должно равняться null\"],\"user_id\":[\"не должно равняться null\"]}"
                                     )})})
     })
@@ -50,6 +51,8 @@ public final class VkUsersController {
                                   BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(convert.toMessages(bindingResult));
+        if (token.isBlank())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Header vk_service_token not found"));
         VkUser vkUser = vkService.getUser(requestBody, token);
         VkUserDto vkUserDto = convert.toVKUserDto(vkUser);
         return ResponseEntity.ok().body(vkUserDto);

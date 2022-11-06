@@ -21,7 +21,7 @@ public class SpringSecurityConfig {
 
     JWTFilter jwtFilter;
 
-    String [] SWAGGER = {
+    String[] SWAGGER = {
             "/v2/api-docs",
             "/swagger-resources",
             "/swagger-resources/**",
@@ -42,12 +42,10 @@ public class SpringSecurityConfig {
                 .authorizeRequests()
                 .antMatchers(SWAGGER).permitAll()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/api/reg").permitAll()
+                .antMatchers("/api/reg", "/api/refreshToken").permitAll()
                 .anyRequest().authenticated()
                 .and().headers().frameOptions().sameOrigin()
                 .and().httpBasic();
-
-
         return http.build();
 
     }

@@ -5,4 +5,6 @@ import ru.ncallie.JavaCase.models.User;
 
 public interface UserService extends UserDetailsService {
     void save(User user);
+
+    void validationUsernameAndPassword(User user);
 }

@@ -16,7 +16,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 @Component
 @FieldDefaults(level = PRIVATE)
-public final class JWTUtil {
+public class JWTUtil {
 
     @Value("${jwt_secret}")
     String secret;

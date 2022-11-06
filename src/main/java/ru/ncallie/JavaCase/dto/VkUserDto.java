@@ -15,9 +15,9 @@ import static lombok.AccessLevel.PRIVATE;
 @Getter
 @Builder
 @JsonPropertyOrder({"last_name", "first_name", "nickname", "member"})
-@Schema(name = "User")
+@Schema(name = "VkUserResponse")
 @FieldDefaults(level = PRIVATE)
-public final class VkUserDto {
+public class VkUserDto {
     @Schema(example = "Иван")
     String first_name;
     @Schema(example = "Иванов")

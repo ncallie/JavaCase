@@ -20,7 +20,7 @@ public class VkServiceImp implements VkService {
     public VkUser getUser(VkUserAndGroupIdRequestDto requestBody, String token) {
         VkUser vkUser = vkRepository.getUserById(requestBody.getUser_id(), token);
         if (vkUser.getDeactivated() != null)
-                throw new UserNotFoundException("User " + vkUser.getDeactivated() + " or does not exist");
+            throw new UserNotFoundException("User " + vkUser.getDeactivated() + " or does not exist");
         vkUser.setMember(vkRepository.isMember(requestBody.getUser_id(), requestBody.getGroup_id(), token));
         return vkUser;
     }

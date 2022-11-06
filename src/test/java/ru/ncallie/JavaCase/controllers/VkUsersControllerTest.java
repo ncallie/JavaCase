@@ -33,15 +33,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(properties = {"vk_api_version=5.131"})
+@SpringBootTest()
 @AutoConfigureMockMvc
 public class VkUsersControllerTest {
 
     @Autowired
     private VkUsersController vkUsersController;
-
-    @Autowired
-    private VKRepositoryImp vkRepositoryImp;
     @MockBean
     private VkService vkService;
     @MockBean

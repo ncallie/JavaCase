@@ -7,7 +7,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 @Getter
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-public final class VkApiException extends RuntimeException {
+public class VkApiException extends RuntimeException {
     Integer code;
     String msg;
 

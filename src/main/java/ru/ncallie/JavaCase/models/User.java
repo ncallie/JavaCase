@@ -25,9 +25,10 @@ import static lombok.AccessLevel.PRIVATE;
 @Getter
 @Table(name = "usr")
 @FieldDefaults(level = PRIVATE)
-public final class User implements UserDetails {
+public class User implements UserDetails {
 
-    @Id @GeneratedValue(strategy = AUTO)
+    @Id
+    @GeneratedValue(strategy = AUTO)
     Long id;
     @Column(unique = true, columnDefinition = "TEXT")
     String username;

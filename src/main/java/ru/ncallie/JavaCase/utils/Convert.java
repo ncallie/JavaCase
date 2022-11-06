@@ -42,6 +42,7 @@ public class Convert {
     public VkUserDto toVKUserDto(VkUser vkUser) {
         return modelMapper.map(vkUser, VkUserDto.class);
     }
+
     public User toUser(UserDto userDto) {
         return modelMapper.map(userDto, User.class);
     }

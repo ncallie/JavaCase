@@ -13,9 +13,9 @@ import static lombok.AccessLevel.PRIVATE;
 
 @Getter
 @AllArgsConstructor
-@Schema(name = "getUser")
+@Schema(name = "VkRequest")
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-public final class VkUserAndGroupIdRequestDto {
+public class VkUserAndGroupIdRequestDto {
     @Positive @NotNull
     @Schema(description = "User identifier", example = "205080632", minimum = "1", maximum = "2147483647", required = true)
     Integer user_id;

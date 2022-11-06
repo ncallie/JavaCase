@@ -13,7 +13,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Data
 @Builder
 @FieldDefaults(level = PRIVATE)
-public final class VkUser {
+public class VkUser {
     Integer id;
     String first_name;
     String last_name;

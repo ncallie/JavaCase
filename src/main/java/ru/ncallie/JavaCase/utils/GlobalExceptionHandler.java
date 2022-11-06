@@ -3,7 +3,7 @@ package ru.ncallie.JavaCase.utils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.ncallie.JavaCase.exceptions.DataInUseException;
@@ -47,8 +47,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<String> handleException(UsernameNotFoundException exception, HttpServletRequest request) {
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<String> handleException(AuthenticationException exception, HttpServletRequest request) {
         Map<String, String> errors = new LinkedHashMap<>();
         errors.put("error code", "401");
         errors.put("error_msg", "You aren’t authenticated–either not authenticated at all or authenticated incorrectly–but please reauthenticate and try again");

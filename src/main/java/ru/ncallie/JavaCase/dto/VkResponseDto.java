@@ -9,8 +9,9 @@ import java.util.List;
 
 import static lombok.AccessLevel.PRIVATE;
 
-@Getter @Setter
+@Getter
+@Setter
 @FieldDefaults(level = PRIVATE)
-public final class VkResponseDto {
+public class VkResponseDto {
     List<VkUser> response;
 }
