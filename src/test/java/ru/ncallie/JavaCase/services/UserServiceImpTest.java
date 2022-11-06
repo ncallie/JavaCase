@@ -1,7 +1,6 @@
 package ru.ncallie.JavaCase.services;
 
 import org.junit.Assert;
-import org.junit.function.ThrowingRunnable;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import ru.ncallie.JavaCase.repositories.UserRepository;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)

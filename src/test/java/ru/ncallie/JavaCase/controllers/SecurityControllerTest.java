@@ -3,7 +3,6 @@ package ru.ncallie.JavaCase.controllers;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +16,6 @@ import ru.ncallie.JavaCase.models.User;
 import ru.ncallie.JavaCase.services.UserService;
 import ru.ncallie.JavaCase.utils.Convert;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
