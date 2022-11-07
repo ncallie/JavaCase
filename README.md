@@ -46,7 +46,11 @@ Request
 
 Response
 
-Headers: `vk_service_token - токен вк Authorization- JWT токен`
+Headers: 
+```
+vk_service_token - токен вк (Платформа: Встраиваемое приложение)
+Authorization- JWT токен
+```
 
 ```JSON
 {
