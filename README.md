@@ -77,3 +77,10 @@ Request
 - Тесты
 - Авторизация c помощью JWT токена
 - каширование ответов от БД и Api VK (Spring Cache)
+
+## Здесь можно потестить
+- http://ovz2.j27292517.pqr7m.vps.myjino.ru:49405/api/reg
+- http://ovz2.j27292517.pqr7m.vps.myjino.ru:49405/api/refreshToken
+- http://ovz2.j27292517.pqr7m.vps.myjino.ru:49405/api/vk/user
+- http://ovz2.j27292517.pqr7m.vps.myjino.ru:49405/h2-console
+- http://ovz2.j27292517.pqr7m.vps.myjino.ru:49405/swagger-ui/index.html
